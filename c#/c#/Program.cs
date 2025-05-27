@@ -6,8 +6,9 @@ namespace Project
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine("Prasu\tHirpara");
+            // TypeCasting.run();
+            // Input.run();
+            // Maths.run();
         }
     }
 }
