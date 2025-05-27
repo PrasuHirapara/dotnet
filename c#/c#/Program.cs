@@ -9,6 +9,8 @@ namespace Project
             // TypeCasting.run();
             // Input.run();
             // Maths.run();
+            // Randoms.run();
+            // Strings.run();
         }
     }
 }
