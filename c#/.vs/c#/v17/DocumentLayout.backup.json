@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|c:\\users\\dell\\desktop\\projects\\dotnet\\c#\\c#\\oops\\interface\\interface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\oops\\interface\\interface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|c:\\users\\dell\\desktop\\projects\\dotnet\\c#\\c#\\datetime\\datetimeexamlpe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\datetime\\datetimeexamlpe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,14 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Interface.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\OOPs\\Interface\\Interface.cs",
-              "RelativeDocumentMoniker": "c#\\OOPs\\Interface\\Interface.cs",
-              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\OOPs\\Interface\\Interface.cs",
-              "RelativeToolTip": "c#\\OOPs\\Interface\\Interface.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAQwCoAAAAAAAAAAAAAAA==",
+              "Title": "DateTimeExamlpe.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\DateTime\\DateTimeExamlpe.cs",
+              "RelativeDocumentMoniker": "c#\\DateTime\\DateTimeExamlpe.cs",
+              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\DateTime\\DateTimeExamlpe.cs",
+              "RelativeToolTip": "c#\\DateTime\\DateTimeExamlpe.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwAcAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T07:51:43.678Z",
+              "WhenOpened": "2025-05-28T11:23:17.05Z",
               "EditorCaption": ""
             },
             {
@@ -39,11 +39,11 @@
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Program.cs",
               "RelativeDocumentMoniker": "c#\\Program.cs",
-              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Program.cs",
-              "RelativeToolTip": "c#\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAPAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Program.cs*",
+              "RelativeToolTip": "c#\\Program.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T03:54:47.759Z",
+              "WhenOpened": "2025-05-28T10:35:13Z",
               "EditorCaption": ""
             }
           ]
