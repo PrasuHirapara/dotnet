@@ -6,7 +6,7 @@ namespace Project
     {
         static void Main(string[] args)
         {
-            Delegates.run();
+            ListExample.run();
         }
     }
 }
