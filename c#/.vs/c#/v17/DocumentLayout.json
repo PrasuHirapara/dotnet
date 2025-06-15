@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|c:\\users\\dell\\desktop\\projects\\dotnet\\c#\\c#\\struct\\structs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\struct\\structs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|c:\\users\\dell\\desktop\\projects\\dotnet\\c#\\c#\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|c:\\users\\dell\\desktop\\projects\\dotnet\\c#\\c#\\project\\tic tac toe\\tictactoe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C49D7540-E3BE-4C57-A4D1-012D44E9D0F2}|c#\\c#.csproj|solutionrelative:c#\\project\\tic tac toe\\tictactoe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,30 +18,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Structs.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Struct\\Structs.cs",
-              "RelativeDocumentMoniker": "c#\\Struct\\Structs.cs",
-              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Struct\\Structs.cs",
-              "RelativeToolTip": "c#\\Struct\\Structs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAgAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "TicTacToe.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Project\\Tic Tac Toe\\TicTacToe.cs",
+              "RelativeDocumentMoniker": "c#\\Project\\Tic Tac Toe\\TicTacToe.cs",
+              "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Project\\Tic Tac Toe\\TicTacToe.cs",
+              "RelativeToolTip": "c#\\Project\\Tic Tac Toe\\TicTacToe.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABQAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-06T06:16:16.585Z",
+              "WhenOpened": "2025-06-15T10:56:28.95Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Program.cs",
               "RelativeDocumentMoniker": "c#\\Program.cs",
               "ToolTip": "C:\\Users\\Dell\\Desktop\\Projects\\dotnet\\c#\\c#\\Program.cs",
               "RelativeToolTip": "c#\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:40:37.254Z",
               "EditorCaption": ""

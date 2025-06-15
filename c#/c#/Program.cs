@@ -6,8 +6,8 @@ namespace Project
     {
         static void Main(string[] args)
         {
-            ListExample.Run();
-
+            TicTacToe game = new TicTacToe();
+            game.Play1V1();
         }
     }
 }
