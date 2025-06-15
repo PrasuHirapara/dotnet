@@ -7,7 +7,7 @@ namespace Project
         static void Main(string[] args)
         {
             TicTacToe game = new TicTacToe();
-            game.Play1V1();
+            game.PlayComputer();
         }
     }
 }
