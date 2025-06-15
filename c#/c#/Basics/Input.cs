@@ -2,7 +2,7 @@
 
 public class Input
 {
-	public static void run()
+	public static void Run()
 	{
 		Console.WriteLine("Enter name : ");
 

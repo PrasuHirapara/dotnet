@@ -36,7 +36,7 @@ internal class Event
         Console.WriteLine("Event received: " + message);
     }
 
-    internal static void run()
+    internal static void Run()
     {
         OnNotify += SubscriberA;
         OnNotify += Listener.ExternalHandler;

@@ -3,7 +3,7 @@ using System.Threading;
 
 public class Threading
 {
-    public static void run()
+    public static void Run()
     {
         // Creating a thread with a method
         Thread thread1 = new Thread(new ThreadStart(PrintNumbers));

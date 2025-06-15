@@ -2,7 +2,7 @@
 
 public class Methods
 {
-    public static void run()
+    public static void Run()
     {
         // 1. Basic Method Call
         GreetUser(); // Output: Hello, User!

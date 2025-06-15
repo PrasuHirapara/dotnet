@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ListExample
 {
-    public static void run()
+    public static void Run()
     {
         // Create a new list of integers
         List<int> numbers = new List<int>();

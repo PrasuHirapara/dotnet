@@ -2,7 +2,7 @@
 
 public class TimeSpanExample
 {
-    public static void run()
+    public static void Run()
     {
         // Create TimeSpan of 1 hour, 30 minutes, 45 seconds
         // TimeSpan(hours, minutes, seconds)

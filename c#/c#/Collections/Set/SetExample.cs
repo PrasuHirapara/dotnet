@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SetExample
 {
-    public static void run()
+    public static void Run()
     {
         // Create a new HashSet of integers
         HashSet<int> set = new HashSet<int>();

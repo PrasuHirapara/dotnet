@@ -1,7 +1,7 @@
 ﻿using System;
 public class Classes
 {
-    public static void run()
+    public static void Run()
     {
         A obj1 = new A();
         A obj2 = new A(2, "custom");

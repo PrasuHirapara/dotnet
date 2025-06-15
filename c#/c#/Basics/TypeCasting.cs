@@ -2,7 +2,7 @@
 
 public class TypeCasting
 {
-    public static void run()
+    public static void Run()
     {
         // IMPLICIT TYPE CASTING
         // Implicit: small → large data types (no data loss)

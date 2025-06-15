@@ -2,7 +2,7 @@
 
 public class ExceptionHandling
 {
-    public static void run()
+    public static void Run()
     {
         // 1. Basic try-catch
         try

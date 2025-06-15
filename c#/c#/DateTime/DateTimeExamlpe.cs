@@ -3,7 +3,7 @@ using System.Globalization;
 
 public class DateTimeExamlpe
 {
-    public static void run()
+    public static void Run()
     {
         DateTime now = DateTime.Now;
         Console.WriteLine("Now: " + now);

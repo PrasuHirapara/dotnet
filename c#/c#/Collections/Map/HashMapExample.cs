@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class HashMapExample
 {
-    public static void run()
+    public static void Run()
     {
         Dictionary<int, string> map = new Dictionary<int, string>();
 

@@ -3,7 +3,7 @@ using System;
 
 public class Generics
 {
-    public static void run()
+    public static void Run()
     {
         CustomLinkedList<int> intList = new CustomLinkedList<int>();
         intList.Add(10);

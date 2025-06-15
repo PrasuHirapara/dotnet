@@ -37,29 +37,4 @@ namespace StructDemo
             return $"[Employee] {Id} - {Name} - {Salary}";
         }
     }
-
-    class Program
-    {
-        static void Main()
-        {
-            // Using parameterized constructor
-            Employee emp1 = new Employee(101, "Alice", 60000);
-
-            // Using object initializer
-            Employee emp2 = new Employee
-            {
-                Id = 102,
-                Name = "Bob",
-                Salary = 55000
-            };
-
-            // Access members
-            emp1.DisplayInfo();
-            Console.WriteLine(emp2.ToString());
-
-            // Update property
-            emp2.Salary += 5000;
-            Console.WriteLine($"Updated Salary of Bob: {emp2.Salary}");
-        }
-    }
 }

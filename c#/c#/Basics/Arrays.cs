@@ -2,7 +2,7 @@
 
 public class Arrays
 {
-    public static void run()
+    public static void Run()
     {
         // 1. Declaration and Initialization
         int[] numbers1 = new int[5]; // default values (0, 0, 0, 0, 0)

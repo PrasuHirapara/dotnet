@@ -4,7 +4,7 @@ using System.Linq;
 
 public class LambdaExample
 {
-    public static void run()
+    public static void Run()
     {
         // 1. Simple lambda with one parameter (expression-bodied)
         Func<int, int> square = x => x * x;

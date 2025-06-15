@@ -3,7 +3,7 @@ using System.Text;
 
 public class StringBuilderExample
 {
-    public static void run()
+    public static void Run()
     {
         StringBuilder sb = new StringBuilder();
 

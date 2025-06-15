@@ -2,7 +2,7 @@
 
 internal class LINQ
 {
-    public static void run()
+    public static void Run()
     {
 
     }

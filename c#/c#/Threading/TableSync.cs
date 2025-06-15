@@ -22,7 +22,7 @@ public class TableSync
         }
     }
 
-    public static void run()
+    public static void Run()
     {
         Console.WriteLine("Main thread started");
 

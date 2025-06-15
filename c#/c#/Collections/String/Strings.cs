@@ -2,7 +2,7 @@
 
 public class Strings
 {
-    public static void run()
+    public static void Run()
     {
         // 1. Declaration and Initialization
         string s1 = "Hello";

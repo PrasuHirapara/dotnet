@@ -2,7 +2,7 @@
 
 public class Maths
 {
-    public static void run()
+    public static void Run()
     {
         // Abs() returns absolute value
         Console.WriteLine(Math.Abs(-20)); // Output: 20

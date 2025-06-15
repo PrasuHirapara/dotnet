@@ -38,7 +38,7 @@ public class Delegates
         Console.WriteLine("Welcome, " + name);
     }
 
-    public static void run()
+    public static void Run()
     {
         Console.WriteLine("=== SINGLE-CAST DELEGATE ===");
 

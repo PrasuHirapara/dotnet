@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 public class AsyncAwait
 {
-    public static async Task run()
+    public static async Task Run()
     {
         Console.WriteLine("Main method started");
 
