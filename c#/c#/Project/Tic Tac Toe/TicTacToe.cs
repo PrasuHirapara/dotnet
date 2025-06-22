@@ -171,7 +171,7 @@ internal class TicTacToe
 
         while (!valid)
         {
-            Console.Write("Enter position for " + ch);
+            Console.Write("Enter position for " + ch + " : ");
             string[] inputs = Console.ReadLine()?.Split();
 
             if (inputs?.Length != 2 ||
