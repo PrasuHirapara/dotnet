@@ -1067,20 +1067,1209 @@ Synchronization primitives are used to coordinate access to shared resources in 
         }
     }
     
+C# Intermediate: A Complete Guide
+=================================
 
-Concurrent File
----------------
+Concurrent File Processor
+-------------------------
 
-Related Topics
---------------
+Concurrency is crucial for improving application performance, especially when dealing with I/O-bound operations like file processing. This section explores building a concurrent file processor using `Task` and `async/await`.
 
-Explore related concepts to expand your knowledge
+### Asynchronous File Operations
 
-[Design Pattern Strategy](/ai/guide?term=I%20have%20covered%20the%20basics%20of%20C%23%20Mastery%3A%20A%20Comprehensive%20Guide%20and%20want%20to%20learn%20more%20about%20Design%20Pattern%20Strategy&depth=essentials&id=&format=guide)[Plugin System Exercise](/ai/guide?term=I%20have%20covered%20the%20basics%20of%20C%23%20Mastery%3A%20A%20Comprehensive%20Guide%20and%20want%20to%20learn%20more%20about%20Plugin%20System%20Exercise&depth=essentials&id=&format=guide)
+Leverage `FileStream` with `UseAsync = true` for asynchronous file I/O. This prevents blocking the main thread.
 
-Dive Deeper
------------
+    public async Task ProcessFileAsync(string filePath)
+    {
+        using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+        using (var reader = new StreamReader(stream))
+        {
+            string line;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                // Process the line asynchronously
+                await ProcessLineAsync(line);
+            }
+        }
+    }
+    
+    private async Task ProcessLineAsync(string line)
+    {
+        // Simulate some work
+        await Task.Delay(10);
+        Console.WriteLine($"Processed: {line}");
+    }
+    
 
-Take a deeper dive into specific areas
+### Task Parallelism
 
-[Interfaces Multiple Inheritance](/ai/guide?term=I%20have%20covered%20the%20basics%20of%20C%23%20Mastery%3A%20A%20Comprehensive%20Guide%20and%20want%20to%20dive%20deeper%20into%20Interfaces%20Multiple%20Inheritance&depth=detailed&id=&format=guide)[OOP Deep Dive](/ai/guide?term=I%20have%20covered%20the%20basics%20of%20C%23%20Mastery%3A%20A%20Comprehensive%20Guide%20and%20want%20to%20dive%20deeper%20into%20OOP%20Deep%20Dive&depth=detailed&id=&format=guide)
+Use `Task.Run` or `Task.Factory.StartNew` to offload CPU-bound operations to the thread pool. `Task.Run` is generally preferred for simpler scenarios.
+
+    public async Task ProcessFilesConcurrentlyAsync(List<string> filePaths)
+    {
+        var tasks = filePaths.Select(filePath => Task.Run(() => ProcessFileAsync(filePath)));
+        await Task.WhenAll(tasks);
+    }
+    
+
+### Data Partitioning
+
+For large files, partition the data into chunks and process each chunk concurrently. This can significantly improve performance.
+
+    public async Task ProcessFileInChunksAsync(string filePath, int chunkSize)
+    {
+        using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+        using (var reader = new StreamReader(stream))
+        {
+            char[] buffer = new char[chunkSize];
+            int bytesRead;
+            while ((bytesRead = await reader.ReadAsync(buffer, 0, chunkSize)) > 0)
+            {
+                var chunk = new string(buffer, 0, bytesRead);
+                await Task.Run(() => ProcessChunkAsync(chunk));
+            }
+        }
+    }
+    
+    private async Task ProcessChunkAsync(string chunk)
+    {
+        // Process the chunk of data
+        await Task.Delay(5); // Simulate processing
+        Console.WriteLine($"Processed chunk: {chunk.Substring(0, Math.Min(20, chunk.Length))}...");
+    }
+    
+
+### Thread Safety
+
+When multiple threads access shared resources, ensure thread safety using locks, mutexes, or concurrent collections.
+
+    private static readonly object _lock = new object();
+    private static int _processedCount = 0;
+    
+    private async Task ProcessLineThreadSafeAsync(string line)
+    {
+        // Simulate some work
+        await Task.Delay(10);
+        lock (_lock)
+        {
+            _processedCount++;
+            Console.WriteLine($"Processed: {line}, Count: {_processedCount}");
+        }
+    }
+    
+
+Advanced LINQ Queries
+---------------------
+
+LINQ (Language Integrated Query) provides a powerful way to query and manipulate data. This section explores advanced LINQ techniques.
+
+### Grouping and Aggregation
+
+Use `GroupBy` to group data based on a key and then apply aggregate functions like `Sum`, `Average`, `Min`, and `Max`.
+
+    var students = new List<Student>
+    {
+        new Student { Name = "Alice", Grade = 90, Class = "A" },
+        new Student { Name = "Bob", Grade = 80, Class = "B" },
+        new Student { Name = "Charlie", Grade = 95, Class = "A" },
+        new Student { Name = "David", Grade = 75, Class = "B" }
+    };
+    
+    var averageGradesByClass = students.GroupBy(s => s.Class)
+        .Select(g => new { Class = g.Key, AverageGrade = g.Average(s => s.Grade) });
+    
+    foreach (var item in averageGradesByClass)
+    {
+        Console.WriteLine($"Class: {item.Class}, Average Grade: {item.AverageGrade}");
+    }
+    
+
+### Joins
+
+Use `Join`, `GroupJoin`, and `Zip` to combine data from multiple sequences.
+
+    var employees = new List<Employee>
+    {
+        new Employee { Id = 1, Name = "Alice", DepartmentId = 1 },
+        new Employee { Id = 2, Name = "Bob", DepartmentId = 2 }
+    };
+    
+    var departments = new List<Department>
+    {
+        new Department { Id = 1, Name = "Sales" },
+        new Department { Id = 2, Name = "Marketing" }
+    };
+    
+    var employeeDepartments = employees.Join(departments,
+        e => e.DepartmentId,
+        d => d.Id,
+        (e, d) => new { EmployeeName = e.Name, DepartmentName = d.Name });
+    
+    foreach (var item in employeeDepartments)
+    {
+        Console.WriteLine($"Employee: {item.EmployeeName}, Department: {item.DepartmentName}");
+    }
+    
+
+### Subqueries
+
+Use subqueries to filter data based on conditions derived from another query.
+
+    var highGradeStudents = students.Where(s => s.Grade > students.Average(x => x.Grade));
+    
+    foreach (var student in highGradeStudents)
+    {
+        Console.WriteLine($"High Grade Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+### Deferred Execution
+
+Understand that LINQ queries are often executed lazily (deferred execution). This means the query is not executed until the results are enumerated. Use `ToList()` or `ToArray()` to force immediate execution.
+
+    var query = students.Where(s => s.Grade > 85); // Deferred execution
+    
+    students.Add(new Student { Name = "Eve", Grade = 92, Class = "A" }); // Add a new student
+    
+    var results = query.ToList(); // Execute the query and materialize the results
+    
+    foreach (var student in results)
+    {
+        Console.WriteLine($"Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+Custom LINQ Operators
+---------------------
+
+Extend LINQ with custom operators to perform specific data transformations.
+
+### Extension Methods
+
+Create extension methods for `IEnumerable<T>` to define custom LINQ operators.
+
+    public static class LinqExtensions
+    {
+        public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> source, bool condition, Func<T, bool> predicate)
+        {
+            return condition ? source.Where(predicate) : source;
+        }
+    
+        public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> source, int n)
+        {
+            return source.Skip(Math.Max(0, source.Count() - n));
+        }
+    }
+    
+
+### Using Custom Operators
+
+Use the custom operators in LINQ queries.
+
+    var filteredStudents = students.WhereIf(true, s => s.Grade > 80); // Apply filter
+    var lastTwoStudents = students.TakeLast(2); // Take the last two students
+    
+    foreach (var student in filteredStudents)
+    {
+        Console.WriteLine($"Filtered Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+    foreach (var student in lastTwoStudents)
+    {
+        Console.WriteLine($"Last Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+### Implementing Custom Logic
+
+Implement custom logic within the extension methods to perform specific data transformations.
+
+    public static class LinqExtensions
+    {
+        public static IEnumerable<T> Paginate<T>(this IEnumerable<T> source, int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) pageSize = 10;
+    
+            return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+    }
+    
+    var page1Students = students.Paginate(1, 2); // Get the first page of students (2 per page)
+    
+    foreach (var student in page1Students)
+    {
+        Console.WriteLine($"Page 1 Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+Working LINQ XML
+----------------
+
+LINQ to XML provides a fluent API for querying and manipulating XML data.
+
+### Loading XML
+
+Load XML data from a file or string using `XDocument.Load` or `XDocument.Parse`.
+
+    using System.Xml.Linq;
+    
+    // Load from file
+    XDocument doc = XDocument.Load("students.xml");
+    
+    // Load from string
+    string xmlString = "<Students><Student><Name>Alice</Name><Grade>90</Grade></Student></Students>";
+    XDocument docFromString = XDocument.Parse(xmlString);
+    
+
+### Querying XML
+
+Use LINQ queries to extract data from the XML document.
+
+    var studentNames = doc.Descendants("Student")
+        .Select(s => s.Element("Name").Value);
+    
+    foreach (var name in studentNames)
+    {
+        Console.WriteLine($"Student Name: {name}");
+    }
+    
+
+### Creating XML
+
+Create new XML documents or modify existing ones using the LINQ to XML API.
+
+    XDocument newDoc = new XDocument(
+        new XElement("Students",
+            new XElement("Student",
+                new XElement("Name", "Bob"),
+                new XElement("Grade", 85)
+            )
+        )
+    );
+    
+    newDoc.Save("new_students.xml");
+    
+
+### Modifying XML
+
+Modify existing XML elements and attributes.
+
+    XElement studentElement = doc.Descendants("Student").FirstOrDefault();
+    if (studentElement != null)
+    {
+        studentElement.Element("Grade").Value = "95";
+        doc.Save("modified_students.xml");
+    }
+    
+
+LINQ Data Manipulation
+----------------------
+
+LINQ can be used to transform and manipulate data in various ways.
+
+### Projection
+
+Use `Select` to project data into a new form.
+
+    var studentNamesAndGrades = students.Select(s => new { s.Name, s.Grade });
+    
+    foreach (var item in studentNamesAndGrades)
+    {
+        Console.WriteLine($"Name: {item.Name}, Grade: {item.Grade}");
+    }
+    
+
+### Filtering
+
+Use `Where` to filter data based on a condition.
+
+    var highGradeStudents = students.Where(s => s.Grade > 85);
+    
+    foreach (var student in highGradeStudents)
+    {
+        Console.WriteLine($"High Grade Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+### Ordering
+
+Use `OrderBy` and `OrderByDescending` to sort data.
+
+    var sortedStudents = students.OrderBy(s => s.Name);
+    
+    foreach (var student in sortedStudents)
+    {
+        Console.WriteLine($"Sorted Student: {student.Name}, Grade: {student.Grade}");
+    }
+    
+
+### Distinct
+
+Use `Distinct` to remove duplicate elements.
+
+    var numbers = new List<int> { 1, 2, 2, 3, 4, 4, 5 };
+    var distinctNumbers = numbers.Distinct();
+    
+    foreach (var number in distinctNumbers)
+    {
+        Console.WriteLine($"Distinct Number: {number}");
+    }
+    
+
+LINQ Entity Framework
+---------------------
+
+LINQ to Entities allows you to query and manipulate data in a database using LINQ syntax.
+
+### Setting up Entity Framework
+
+Install the Entity Framework Core NuGet package and configure the database context.
+
+    // Example using SQLite
+    // dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+    using Microsoft.EntityFrameworkCore;
+    
+    public class SchoolContext : DbContext
+    {
+        public DbSet<Student> Students { get; set; }
+    
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlite("Data Source=school.db");
+        }
+    }
+    
+
+### Querying Data
+
+Use LINQ to query data from the database.
+
+    using (var context = new SchoolContext())
+    {
+        var highGradeStudents = context.Students.Where(s => s.Grade > 85).ToList();
+    
+        foreach (var student in highGradeStudents)
+        {
+            Console.WriteLine($"Student: {student.Name}, Grade: {student.Grade}");
+        }
+    }
+    
+
+### Adding Data
+
+Add new entities to the database.
+
+    using (var context = new SchoolContext())
+    {
+        var newStudent = new Student { Name = "Eve", Grade = 92, Class = "A" };
+        context.Students.Add(newStudent);
+        context.SaveChanges();
+    }
+    
+
+### Updating Data
+
+Update existing entities in the database.
+
+    using (var context = new SchoolContext())
+    {
+        var studentToUpdate = context.Students.FirstOrDefault(s => s.Name == "Alice");
+        if (studentToUpdate != null)
+        {
+            studentToUpdate.Grade = 98;
+            context.SaveChanges();
+        }
+    }
+    
+
+### Deleting Data
+
+Delete entities from the database.
+
+    using (var context = new SchoolContext())
+    {
+        var studentToDelete = context.Students.FirstOrDefault(s => s.Name == "Bob");
+        if (studentToDelete != null)
+        {
+            context.Students.Remove(studentToDelete);
+            context.SaveChanges();
+        }
+    }
+    
+
+Optimizing LINQ Queries
+-----------------------
+
+Optimizing LINQ queries is crucial for improving application performance, especially when dealing with large datasets.
+
+### Avoid N+1 Problem
+
+The N+1 problem occurs when querying related data. Use eager loading (`Include`) or explicit loading (`Load`) to avoid multiple database round trips.
+
+    // N+1 Problem (Inefficient)
+    using (var context = new SchoolContext())
+    {
+        var departments = context.Departments.ToList();
+        foreach (var department in departments)
+        {
+            // This will result in N+1 queries (one query for departments, and N queries for employees)
+            var employees = context.Employees.Where(e => e.DepartmentId == department.Id).ToList();
+            Console.WriteLine($"Department: {department.Name}, Employee Count: {employees.Count}");
+        }
+    }
+    
+    // Eager Loading (Efficient)
+    using (var context = new SchoolContext())
+    {
+        // This will load departments and their related employees in a single query
+        var departments = context.Departments.Include(d => d.Employees).ToList();
+        foreach (var department in departments)
+        {
+            Console.WriteLine($"Department: {department.Name}, Employee Count: {department.Employees.Count}");
+        }
+    }
+    
+
+### Use Compiled Queries
+
+Compiled queries can improve performance by caching the query execution plan. However, they are less flexible than regular LINQ queries. This is less relevant in modern EF Core versions as query compilation is handled more efficiently.
+
+    // Example using EF6 (less relevant in EF Core)
+    // private static readonly Func<SchoolContext, string, Student> _getStudentByName =
+    //     CompiledQuery.Compile((SchoolContext context, string name) =>
+    //         context.Students.FirstOrDefault(s => s.Name == name));
+    
+    // using (var context = new SchoolContext())
+    // {
+    //     var student = _getStudentByName(context, "Alice");
+    //     Console.WriteLine($"Student: {student.Name}, Grade: {student.Grade}");
+    // }
+    
+
+### Filter Early
+
+Apply filters as early as possible in the query pipeline to reduce the amount of data processed.
+
+    // Inefficient
+    var results = students.Where(s => s.Name.StartsWith("A"))
+        .Select(s => new { s.Name, s.Grade })
+        .ToList();
+    
+    // Efficient
+    var results2 = students.Select(s => new { s.Name, s.Grade })
+        .Where(s => s.Name.StartsWith("A"))
+        .ToList();
+    
+
+### Avoid Client-Side Evaluation
+
+Ensure that LINQ queries are executed on the database server, not on the client. Client-side evaluation can be inefficient, especially for large datasets. Check the generated SQL to confirm.
+
+    // Potentially inefficient (client-side evaluation if ToUpper() is not supported by the database)
+    using (var context = new SchoolContext())
+    {
+        var studentsWithUpperCaseName = context.Students.Where(s => s.Name.ToUpper() == "ALICE").ToList();
+    }
+    
+
+Data Analysis Tool
+------------------
+
+Building a data analysis tool involves processing and analyzing data from various sources.
+
+### Data Acquisition
+
+Acquire data from files, databases, or APIs.
+
+    // Example: Reading data from a CSV file
+    using (var reader = new StreamReader("data.csv"))
+    {
+        string line;
+        while ((line = reader.ReadLine()) != null)
+        {
+            string[] values = line.Split(',');
+            // Process the values
+        }
+    }
+    
+
+### Data Transformation
+
+Transform the data into a suitable format for analysis.
+
+    // Example: Converting string data to numerical data
+    var grades = new List<string> { "90", "80", "95" };
+    var numericalGrades = grades.Select(g => int.Parse(g)).ToList();
+    
+
+### Data Analysis
+
+Perform statistical analysis, data mining, and visualization.
+
+    // Example: Calculating the average grade
+    double averageGrade = numericalGrades.Average();
+    Console.WriteLine($"Average Grade: {averageGrade}");
+    
+
+### Data Visualization
+
+Visualize the data using charts and graphs. Consider using libraries like OxyPlot or ScottPlot.
+
+    // Example using OxyPlot (requires NuGet package)
+    // dotnet add package OxyPlot.Core
+    // dotnet add package OxyPlot.WindowsForms
+    using OxyPlot;
+    using OxyPlot.Series;
+    using OxyPlot.WindowsForms;
+    
+    var plotModel = new PlotModel { Title = "Student Grades" };
+    var lineSeries = new LineSeries { Title = "Grades" };
+    for (int i = 0; i < numericalGrades.Count; i++)
+    {
+        lineSeries.Points.Add(new DataPoint(i, numericalGrades[i]));
+    }
+    plotModel.Series.Add(lineSeries);
+    
+    var plotView = new PlotView { Model = plotModel };
+    // Add plotView to your form or window
+    
+
+Reflection Inspect Types
+------------------------
+
+Reflection allows you to inspect and manipulate types at runtime.
+
+### Getting Type Information
+
+Use `typeof` or `GetType` to get a `Type` object.
+
+    Type studentType = typeof(Student);
+    Student student = new Student();
+    Type studentType2 = student.GetType();
+    
+
+### Inspecting Members
+
+Use `GetMembers`, `GetFields`, `GetProperties`, and `GetMethods` to inspect the members of a type.
+
+    var members = studentType.GetMembers();
+    foreach (var member in members)
+    {
+        Console.WriteLine($"Member: {member.Name}, Type: {member.MemberType}");
+    }
+    
+    var properties = studentType.GetProperties();
+    foreach (var property in properties)
+    {
+        Console.WriteLine($"Property: {property.Name}, Type: {property.PropertyType}");
+    }
+    
+
+### Accessing Attributes
+
+Use `GetCustomAttributes` to access attributes applied to a type or member.
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class DisplayNameAttribute : Attribute
+    {
+        public string Name { get; set; }
+    }
+    
+    public class Student
+    {
+        [DisplayName(Name = "Student Name")]
+        public string Name { get; set; }
+        public int Grade { get; set; }
+    }
+    
+    var nameProperty = studentType.GetProperty("Name");
+    var displayNameAttribute = (DisplayNameAttribute)nameProperty.GetCustomAttributes(typeof(DisplayNameAttribute), false).FirstOrDefault();
+    
+    if (displayNameAttribute != null)
+    {
+        Console.WriteLine($"Display Name: {displayNameAttribute.Name}");
+    }
+    
+
+Dynamic Method Invocation
+-------------------------
+
+Reflection allows you to invoke methods dynamically at runtime.
+
+### Creating an Instance
+
+Create an instance of a type using `Activator.CreateInstance`.
+
+    Type studentType = typeof(Student);
+    object student = Activator.CreateInstance(studentType);
+    
+
+### Getting a Method
+
+Get a `MethodInfo` object for the method you want to invoke.
+
+    MethodInfo getNameMethod = studentType.GetMethod("GetName"); // Assuming Student has a GetName method
+    
+
+### Invoking the Method
+
+Invoke the method using `MethodInfo.Invoke`.
+
+    // Assuming GetName returns a string
+    string name = (string)getNameMethod.Invoke(student, null);
+    Console.WriteLine($"Name: {name}");
+    
+
+### Handling Parameters
+
+Pass parameters to the method when invoking it.
+
+    MethodInfo setGradeMethod = studentType.GetMethod("SetGrade"); // Assuming Student has a SetGrade(int grade) method
+    setGradeMethod.Invoke(student, new object[] { 95 });
+    
+
+Attributes Metadata Usage
+-------------------------
+
+Attributes provide a way to add metadata to code elements.
+
+### Defining Attributes
+
+Create custom attributes by inheriting from `Attribute`.
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false)]
+    public class AuthorAttribute : Attribute
+    {
+        public string Name { get; set; }
+        public string Version { get; set; }
+    }
+    
+
+### Applying Attributes
+
+Apply attributes to classes, methods, properties, etc.
+
+    [Author(Name = "Alice", Version = "1.0")]
+    public class Student
+    {
+        [DisplayName(Name = "Student Name")]
+        public string Name { get; set; }
+        public int Grade { get; set; }
+    }
+    
+
+### Reading Attributes
+
+Read attribute metadata using reflection.
+
+    Type studentType = typeof(Student);
+    var authorAttribute = (AuthorAttribute)studentType.GetCustomAttributes(typeof(AuthorAttribute), false).FirstOrDefault();
+    
+    if (authorAttribute != null)
+    {
+        Console.WriteLine($"Author: {authorAttribute.Name}, Version: {authorAttribute.Version}");
+    }
+    
+
+Reflection Dynamic Programming
+------------------------------
+
+Reflection can be used to create dynamic and flexible applications.
+
+### Dynamic Object Creation
+
+Create objects dynamically based on configuration or user input.
+
+    string typeName = "MyNamespace.MyClass"; // Get type name from configuration
+    Type type = Type.GetType(typeName);
+    object instance = Activator.CreateInstance(type);
+    
+
+### Dynamic Method Generation
+
+Generate methods dynamically using `DynamicMethod` (requires more advanced knowledge of IL).
+
+    // Example (simplified): Creating a dynamic method that adds two integers
+    // Requires System.Reflection.Emit
+    // AssemblyName assemblyName = new AssemblyName("DynamicAssembly");
+    // AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+    // ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("DynamicModule");
+    // TypeBuilder typeBuilder = moduleBuilder.DefineType("DynamicType", TypeAttributes.Public);
+    // MethodBuilder methodBuilder = typeBuilder.DefineMethod("Add", MethodAttributes.Public | MethodAttributes.Static, typeof(int), new Type[] { typeof(int), typeof(int) });
+    // ILGenerator ilGenerator = methodBuilder.GetILGenerator();
+    // ilGenerator.Emit(OpCodes.Ldarg_0);
+    // ilGenerator.Emit(OpCodes.Ldarg_1);
+    // ilGenerator.Emit(OpCodes.Add);
+    // ilGenerator.Emit(OpCodes.Ret);
+    // Type dynamicType = typeBuilder.CreateType();
+    // MethodInfo addMethod = dynamicType.GetMethod("Add");
+    // int result = (int)addMethod.Invoke(null, new object[] { 5, 3 });
+    // Console.WriteLine($"Result: {result}");
+    
+
+### Plugin Architecture
+
+Implement a plugin architecture using reflection to load and execute plugins dynamically.
+
+    // Load plugins from a directory
+    string pluginDirectory = "Plugins";
+    string[] pluginFiles = Directory.GetFiles(pluginDirectory, "*.dll");
+    
+    foreach (string pluginFile in pluginFiles)
+    {
+        Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
+        foreach (Type type in pluginAssembly.GetTypes())
+        {
+            if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+            {
+                IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                plugin.Execute();
+            }
+        }
+    }
+    
+
+Dynamic Objects ExpandoObject
+-----------------------------
+
+`ExpandoObject` allows you to add and remove members dynamically at runtime.
+
+### Creating an ExpandoObject
+
+Create an instance of `ExpandoObject`.
+
+    dynamic person = new ExpandoObject();
+    
+
+### Adding Members
+
+Add members to the `ExpandoObject` dynamically.
+
+    person.Name = "Alice";
+    person.Age = 30;
+    
+
+### Accessing Members
+
+Access members of the `ExpandoObject` using dynamic syntax.
+
+    Console.WriteLine($"Name: {person.Name}, Age: {person.Age}");
+    
+
+### Using with JSON
+
+`ExpandoObject` is often used with JSON serialization and deserialization.
+
+    // Example using Newtonsoft.Json (requires NuGet package)
+    // dotnet add package Newtonsoft.Json
+    using Newtonsoft.Json;
+    
+    string json = JsonConvert.SerializeObject(person);
+    Console.WriteLine($"JSON: {json}");
+    
+    dynamic deserializedPerson = JsonConvert.DeserializeObject<ExpandoObject>(json);
+    Console.WriteLine($"Deserialized Name: {deserializedPerson.Name}");
+    
+
+Configuration System Building
+-----------------------------
+
+Building a configuration system involves reading and managing application settings.
+
+### Configuration Files
+
+Use configuration files (e.g., `appsettings.json`) to store application settings.
+
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft": "Warning",
+          "Microsoft.Hosting.Lifetime": "Information"
+        }
+      },
+      "AllowedHosts": "*",
+      "MySetting": "MyValue"
+    }
+    
+
+### Reading Configuration
+
+Read configuration settings using `IConfiguration` (requires `Microsoft.Extensions.Configuration` and related packages).
+
+    // dotnet add package Microsoft.Extensions.Configuration
+    // dotnet add package Microsoft.Extensions.Configuration.Json
+    using Microsoft.Extensions.Configuration;
+    
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    
+    IConfiguration configuration = builder.Build();
+    
+    string mySetting = configuration["MySetting"];
+    Console.WriteLine($"MySetting: {mySetting}");
+    
+
+### Configuration Sections
+
+Use configuration sections to organize settings.
+
+    {
+      "MySection": {
+        "Setting1": "Value1",
+        "Setting2": "Value2"
+      }
+    }
+    
+
+    string setting1 = configuration["MySection:Setting1"];
+    Console.WriteLine($"Setting1: {setting1}");
+    
+
+### Binding to Objects
+
+Bind configuration sections to objects.
+
+    public class MySettings
+    {
+        public string Setting1 { get; set; }
+        public string Setting2 { get; set; }
+    }
+    
+    var mySettings = new MySettings();
+    configuration.GetSection("MySection").Bind(mySettings);
+    
+    Console.WriteLine($"Setting1: {mySettings.Setting1}");
+    
+
+Dynamic Plugin Loader
+---------------------
+
+A dynamic plugin loader allows you to load and execute plugins at runtime.
+
+### Plugin Interface
+
+Define an interface that all plugins must implement.
+
+    public interface IPlugin
+    {
+        string Name { get; }
+        string Description { get; }
+        void Execute();
+    }
+    
+
+### Plugin Discovery
+
+Discover plugins by searching for DLL files in a directory.
+
+    string pluginDirectory = "Plugins";
+    string[] pluginFiles = Directory.GetFiles(pluginDirectory, "*.dll");
+    
+
+### Plugin Loading
+
+Load plugins using `Assembly.LoadFrom`.
+
+    foreach (string pluginFile in pluginFiles)
+    {
+        Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
+        foreach (Type type in pluginAssembly.GetTypes())
+        {
+            if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+            {
+                IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                Console.WriteLine($"Loaded plugin: {plugin.Name}");
+                plugin.Execute();
+            }
+        }
+    }
+    
+
+### Dependency Injection
+
+Use dependency injection to provide dependencies to plugins.
+
+    // Example using Microsoft.Extensions.DependencyInjection (requires NuGet package)
+    // dotnet add package Microsoft.Extensions.DependencyInjection
+    using Microsoft.Extensions.DependencyInjection;
+    
+    public class PluginHost
+    {
+        private readonly IServiceProvider _serviceProvider;
+    
+        public PluginHost(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+    
+        public void LoadPlugins(string pluginDirectory)
+        {
+            string[] pluginFiles = Directory.GetFiles(pluginDirectory, "*.dll");
+    
+            foreach (string pluginFile in pluginFiles)
+            {
+                Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
+                foreach (Type type in pluginAssembly.GetTypes())
+                {
+                    if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                    {
+                        // Resolve dependencies using the service provider
+                        IPlugin plugin = (IPlugin)_serviceProvider.GetRequiredService(type);
+                        Console.WriteLine($"Loaded plugin: {plugin.Name}");
+                        plugin.Execute();
+                    }
+                }
+            }
+        }
+    }
+    
+    // Configure services
+    var services = new ServiceCollection();
+    // Register plugins as services (e.g., using AddTransient)
+    // services.AddTransient<MyPlugin>();
+    
+    var serviceProvider = services.BuildServiceProvider();
+    
+    var pluginHost = new PluginHost(serviceProvider);
+    pluginHost.LoadPlugins("Plugins");
+    
+
+Effective Unit Tests
+--------------------
+
+Writing effective unit tests is crucial for ensuring code quality.
+
+### Testable Code
+
+Write code that is easy to test. Avoid tight coupling and dependencies on external resources.
+
+### Arrange, Act, Assert
+
+Follow the Arrange, Act, Assert pattern in your unit tests.
+
+*   **Arrange:** Set up the test environment.
+*   **Act:** Execute the code under test.
+*   **Assert:** Verify the results.
+
+    [Fact]
+    public void Student_GetName_ReturnsCorrectName()
+    {
+        // Arrange
+        var student = new Student { Name = "Alice" };
+    
+        // Act
+        string name = student.Name;
+    
+        // Assert
+        Assert.Equal("Alice", name);
+    }
+    
+
+### Test Coverage
+
+Aim for high test coverage to ensure that most of your code is tested. Use code coverage tools to measure coverage.
+
+### Test Naming
+
+Use clear and descriptive test names.
+
+    // Good
+    [Fact]
+    public void Student_Grade_SetValidGrade_ReturnsGrade() { ... }
+    
+    // Bad
+    [Fact]
+    public void Test1() { ... }
+    
+
+Mocking Frameworks Implementation
+---------------------------------
+
+Mocking frameworks allow you to isolate the code under test by replacing dependencies with mock objects.
+
+### Using Moq
+
+Moq is a popular mocking framework for C#. (Requires NuGet package: `dotnet add package Moq`)
+
+    using Moq;
+    
+    public interface IStudentService
+    {
+        Student GetStudent(int id);
+    }
+    
+    public class StudentController
+    {
+        private readonly IStudentService _studentService;
+    
+        public StudentController(IStudentService studentService)
+        {
+            _studentService = studentService;
+        }
+    
+        public string GetStudentName(int id)
+        {
+            Student student = _studentService.GetStudent(id);
+            return student?.Name;
+        }
+    }
+    
+    [Fact]
+    public void StudentController_GetStudentName_ReturnsStudentName()
+    {
+        // Arrange
+        var mockStudentService = new Mock<IStudentService>();
+        mockStudentService.Setup(s => s.GetStudent(1))
+            .Returns(new Student { Id = 1, Name = "Alice" });
+    
+        var controller = new StudentController(mockStudentService.Object);
+    
+        // Act
+        string name = controller.GetStudentName(1);
+    
+        // Assert
+        Assert.Equal("Alice", name);
+        mockStudentService.Verify(s => s.GetStudent(1), Times.Once); // Verify that GetStudent was called once
+    }
+    
+
+### Mocking Interfaces and Abstract Classes
+
+Mocking frameworks can mock interfaces and abstract classes.
+
+### Verifying Interactions
+
+Verify that methods were called with the expected arguments and number of times.
+
+Test-Driven Development (TDD)
+-----------------------------
+
+Test-Driven Development (TDD) is a development process where you write tests before writing the code.
+
+### Red-Green-Refactor
+
+Follow the Red-Green-Refactor cycle:
+
+*   **Red:** Write a failing test.
+*   **Green:** Write the minimum amount of code to make the test pass.
+*   **Refactor:** Refactor the code to improve its design and maintainability.
+
+### Benefits of TDD
+
+*   Improved code quality
+*   Reduced defects
+*   Better design
+*   Increased confidence
+
+### Example TDD Cycle
+
+1.  **Red:** Write a test for a `Calculator` class that adds two numbers. The test should fail because the `Calculator` class doesn't exist yet.
+2.  **Green:** Write the `Calculator` class with an `Add` method that returns 0. The test will now pass (but the implementation is not correct).
+3.  **Refactor:** Refactor the `Add` method to correctly add two numbers. The test should still pass.
+
+Unit Testing Debugging
+----------------------
+
+Debugging unit tests involves identifying and fixing issues in your tests.
+
+### Debugging Tools
+
+Use the debugger to step through your tests and inspect variables.
+
+### Test Failures
+
+Analyze test failures to understand the root cause of the problem.
+
+### Isolating Issues
+
+Isolate issues by writing smaller, more focused tests.
+
+### Common Issues
+
+*   Incorrect assertions
+*   Setup issues
+*   Mocking errors
+
+Complex Applications Debugging
+------------------------------
+
+Debugging complex applications requires a systematic approach.
+
+### Logging
+
+Use logging to track the flow of execution and identify potential issues.
+
+### Debugging Tools
+
+Use the debugger to step through the code and inspect variables.
+
+### Breakpoints
+
+Set breakpoints at strategic locations to pause execution and examine the state of the application.
+
+### Remote Debugging
+
+Use remote debugging to debug applications running on remote servers or devices.
+
+### Memory Profiling
+
+Use memory profiling tools to identify memory leaks and other memory-related issues.
+
+C# Code Profiling
+-----------------
+
+Code profiling helps you identify performance bottlenecks in your code.
+
+### Profiling Tools
+
+Use profiling tools like Visual Studio Profiler or dotTrace to measure the performance of your code.
+
+### Identifying Bottlenecks
+
+Identify the methods and code sections that consume the most time.
+
+### Optimization Techniques
+
+Apply optimization techniques to improve the performance of your code.
+
+*   Algorithm optimization
+*   Caching
+*   Asynchronous programming
+*   Memory management
+
+Asynchronous API Testing
+------------------------
+
+Testing asynchronous APIs requires special considerations.
+
+### Async Test Methods
+
+Use `async` test methods to properly test asynchronous code.
+
+    [Fact]
+    public async Task MyAsyncTest_ReturnsResult()
+    {
+        // Arrange
+        // Act
+        var result = await MyAsyncMethod();
+    
+        // Assert
+        Assert.NotNull(result);
+    }
+    
+
+### Task Completion
+
+Ensure that asynchronous operations complete before asserting results.
+
+### Mocking Asynchronous Methods
+
+Mock asynchronous methods using mocking frameworks.
+
+    var mockService = new Mock<IMyService>();
+    mockService.Setup(s => s.MyAsyncMethod())
+        .ReturnsAsync("Result");
+    
