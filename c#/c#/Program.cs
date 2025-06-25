@@ -6,7 +6,7 @@ namespace Project
     {
         static void Main(string[] args)
         {
-            LINQ.Run();
+            Console.WriteLine("Hello, World!");
         }
     }
 }

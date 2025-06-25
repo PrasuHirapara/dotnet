@@ -8,4 +8,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Project\Data Fetcher with Retry &amp; Backoff\" />
+    <Folder Include="Project\Concurrent Web Crawler\" />
+    <Folder Include="Project\Real-Time Log File Monitor\" />
+    <Folder Include="Project\YouTube Video Downloader\" />
+    <Folder Include="Project\Task Scheduler\" />
+  </ItemGroup>
+
 </Project>
